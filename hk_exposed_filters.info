@@ -1,0 +1,4 @@
+name = HK Exposed Filters
+description = Dynamic Dependent AJAX Exposed Filters for HK Search
+; http://bouteillenicolas.com/expertise-drupal/views-ajax-dynamic-dependent-exposed-filters
+core = 7.x

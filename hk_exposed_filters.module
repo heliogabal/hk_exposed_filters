@@ -1,0 +1,45 @@
+<?php
+function hk_exposed_filters_form_views_exposed_form_alter(&$form, &$form_state){
+  if(!empty($form_state['values'])) {
+    $form_state['input'] = array_merge($form_state['input'], $form_state['values']);
+  }
+  if ($form['#id'] == 'views-exposed-form-karten-map-page') {
+    dpm($form);
+    //dpm($viewResults);
+    //dpm($form_state);
+
+    $selectedRooms = $form_state['input']['zimmer'];
+
+    $form['bezirk']['#options'] = _get_associative_array_from_view(
+      'dynamic_exposed_filters', // view id
+      'map_page', // view display id
+      'taxonomy_term_data_field_data_field_bezirk_tid', // key field id
+      'taxonomy_term_data_field_data_field_bezirk_name', // value field id
+      $selectedRooms // form state of the selected rooms
+    );
+  }
+}
+function _get_associative_array_from_view($viewID, $viewDisplayID, $keyFieldID, $valueFieldID, $contextualFilter){
+
+  $associativeArray = array();
+  $associativeArray['All'] = t('- Any -');
+
+  $viewResults = views_get_view_result($viewID, $viewDisplayID, $contextualFilter);
+
+  foreach($viewResults as $viewRow) {
+    $associativeArray[$viewRow->$keyFieldID] = $viewRow->$valueFieldID;
+  }
+
+  return $associativeArray;
+}
+$form['zimmer']['#ajax'] = array(
+  'callback' => '_update_bezirk_callback',
+  'wrapper' => 'bezirk_wrapper',
+);
+
+$form['bezirk']['#prefix'] = '<div id="bezirk_wrapper">';
+$form['bezirk']['#suffix'] = '</div>';
+
+function _update_bezirk_callback($form, $form_state) {
+  return $form['bezirk'];
+}
