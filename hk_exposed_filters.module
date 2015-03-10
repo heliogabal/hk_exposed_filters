@@ -4,7 +4,7 @@ function hk_exposed_filters_form_views_exposed_form_alter(&$form, &$form_state){
     $form_state['input'] = array_merge($form_state['input'], $form_state['values']);
   }
   if ($form['#id'] == 'views-exposed-form-karten-map-page') {
-    dpm($form);
+    //dpm($form);
     //dpm($viewResults);
     //dpm($form_state);
 
