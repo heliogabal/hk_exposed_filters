@@ -1,45 +1,114 @@
 <?php
-function hk_exposed_filters_form_views_exposed_form_alter(&$form, &$form_state){
-  if(!empty($form_state['values'])) {
-    $form_state['input'] = array_merge($form_state['input'], $form_state['values']);
-  }
-  if ($form['#id'] == 'views-exposed-form-karten-map-page') {
-    //dpm($form);
-    //dpm($viewResults);
-    //dpm($form_state);
+// function hk_exposed_filters_form_views_exposed_form_alter(&$form, &$form_state){
+//   if(!empty($form_state['values'])) {
+//     $form_state['input'] = array_merge($form_state['input'], $form_state['values']);
+//   }
+//   if ($form['#id'] == 'views-exposed-form-karten-map-page') {
+//     //dpm($form);
+//     //dpm($viewResults);
+//     //dpm($form_state);
 
-    $selectedRooms = $form_state['input']['zimmer'];
+//     $selectedRooms = $form_state['input']['zimmer'];
 
-    $form['bezirk']['#options'] = _get_associative_array_from_view(
-      'dynamic_exposed_filters', // view id
-      'map_page', // view display id
-      'taxonomy_term_data_field_data_field_bezirk_tid', // key field id
-      'taxonomy_term_data_field_data_field_bezirk_name', // value field id
-      $selectedRooms // form state of the selected rooms
-    );
-  }
-}
-function _get_associative_array_from_view($viewID, $viewDisplayID, $keyFieldID, $valueFieldID, $contextualFilter){
+//     $form['bezirk']['#options'] = _get_associative_array_from_view(
+//       'dynamic_exposed_filters', // view id
+//       'map_page', // view display id
+//       'taxonomy_term_data_field_data_field_bezirk_tid', // key field id
+//       'taxonomy_term_data_field_data_field_bezirk_name', // value field id
+//       $selectedRooms // form state of the selected rooms
+//     );
+//   }
+// }
+// function _get_associative_array_from_view($viewID, $viewDisplayID, $keyFieldID, $valueFieldID, $contextualFilter){
 
-  $associativeArray = array();
-  $associativeArray['All'] = t('- Any -');
+//   $associativeArray = array();
+//   $associativeArray['All'] = t('- Any -');
 
-  $viewResults = views_get_view_result($viewID, $viewDisplayID, $contextualFilter);
+//   $viewResults = views_get_view_result($viewID, $viewDisplayID, $contextualFilter);
 
-  foreach($viewResults as $viewRow) {
-    $associativeArray[$viewRow->$keyFieldID] = $viewRow->$valueFieldID;
-  }
+//   foreach($viewResults as $viewRow) {
+//     $associativeArray[$viewRow->$keyFieldID] = $viewRow->$valueFieldID;
+//   }
 
-  return $associativeArray;
-}
-$form['zimmer']['#ajax'] = array(
-  'callback' => '_update_bezirk_callback',
-  'wrapper' => 'bezirk_wrapper',
-);
+//   return $associativeArray;
+// }
+// $form['zimmer']['#ajax'] = array(
+//   'callback' => '_update_bezirk_callback',
+//   'wrapper' => 'bezirk_wrapper',
+// );
 
-$form['bezirk']['#prefix'] = '<div id="bezirk_wrapper">';
-$form['bezirk']['#suffix'] = '</div>';
+// $form['bezirk']['#prefix'] = '<div id="bezirk_wrapper">';
+// $form['bezirk']['#suffix'] = '</div>';
 
-function _update_bezirk_callback($form, $form_state) {
-  return $form['bezirk'];
-}
+// function _update_bezirk_callback($form, $form_state) {
+//   return $form['bezirk'];
+// }
+
+// function hk_exposed_filters_facet_items_alter(&$build, &$settings) {
+  // $adapter = facetapi_adapter_load($settings->searcher);
+  // $facet = facetapi_facet_load($settings->facet, $settings->searcher);
+  // $items = $adapter->getActiveItems($facet);
+
+  // $item_values = array();
+
+  // foreach ($items as $item) {
+  //   $item_values[] = $item['value'];
+  // }
+
+  // $is_all_link_active = count($items) == 0;
+  // $all_link_path = $adapter->getFacetPath($facet, $item_values, TRUE);
+  // $all_link_query = $adapter->getQueryString($facet, $item_values, TRUE);
+
+// if ($settings->facet == "field_apart_price") {
+//   $build['All'] = array(
+//     '#markup' => t('Price'),
+//     '#path' => $all_link_path,
+//     '#html' => FALSE,
+//     '#count' => NULL,
+//     '#indexed_value' => 'Price',
+//     '#active' => $is_all_link_active,
+//     '#item_parents' => array(),
+//     '#item_children' => array(),
+//     '#query' => $all_link_query,
+//   );
+//   }
+// }
+
+/*
+ *
+ implements hook_facet_items_alter(&$build, &$settings)
+ */
+// function hk_exposed_filters_facet_items_alter(&$build, &$settings)
+//  {
+//   dsm($build);
+//   dsm($settings);
+  // if ($settings->facet == "field_kategorie") {
+  //   foreach($build as $key => $item) {
+  //     $build[$key]["#markup"] = drupal_strtoupper($item["#markup"]);
+  //   }
+  // }
+ //  if ($settings->facet == 'type')
+ //   {
+ //    foreach ($build as $key => $item)
+ //     {
+ //      switch ($key)
+ //      {
+ //        case 'field_apart_price':
+ //          $build['field_apart_price']['#label'] = drupal_strtoupper($item["#label"]);
+ //          break;
+ //        case 'field_apart_rooms':
+ //          $build['field_apart_rooms']['#markup'] = "t('Rooms')";
+ //          break;
+ //        case 'field_apart_living_space':
+ //          $build['field_apart_living_space']['#markup'] = "Space";
+ //          break;
+ //        case 'field_object_ref%3Afield_bezirk':
+ //          $build['field_object_ref%3Afield_bezirk']['#markup'] = 'Bezirk';
+ //          break;
+ //        case 'field_category':
+ //          $build['field_category']['#markup'] = 'Kategorie';
+ //          break;
+ //      }
+ //     }
+ //   }
+ // }
